@@ -41,10 +41,21 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.Use(async (context, next) =>
+{
+    await next.Invoke();
+
+    if (context.Response.StatusCode == 404)
+        context.Response.Redirect("http://www.contoso.com");
+
+});
+
 app.Run();
 
-//app.Run(context =>
+//app.Run(async context =>
 //{
-//    if(context.Response.StatusCode == 404)
+//    // TODO : enable custom routes
 
+//    if (context.Response.StatusCode == 404)
+//        context.Response.Redirect("http://www.contoso.com");
 //});
