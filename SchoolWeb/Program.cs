@@ -37,18 +37,34 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+//app.MapControllerRoute(
+//    name: "Privacy",
+//    pattern: "Private/{name=Ted}",
+//    defaults: new { controller = "Home", action = "Privacy" });
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Use(async (context, next) =>
-{
-    await next.Invoke();
+//app.MapControllerRoute(
+//    name: "today",
+//    pattern: "Today",
+//    defaults: new { controller = "Home", action = "Today" });
 
-    if (context.Response.StatusCode == 404)
-        context.Response.Redirect("http://www.contoso.com");
+// old default route
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller}/{action}/{id?}",
+//    defaults: new { controller = "Home", action = "Index" });
 
-});
+//app.Use(async (context, next) =>
+//{
+//    await next.Invoke();
+
+//    if (context.Response.StatusCode == 404)
+//        context.Response.Redirect("http://www.contoso.com");
+
+//});
 
 app.Run();
 

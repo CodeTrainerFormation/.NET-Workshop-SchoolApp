@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 namespace SchoolWeb.Controllers
 {
+    //[Route("Private")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> logger;
@@ -16,6 +17,9 @@ namespace SchoolWeb.Controllers
             this.tools = tools;
         }
 
+        //[Route("")]
+        //[Route("Index")]
+        //[HttpGet("Index")]
         public IActionResult Index()
         {
             Debug.WriteLine(this.tools.GetTodayDate());
@@ -23,11 +27,31 @@ namespace SchoolWeb.Controllers
             return View();
         }
 
+        //[Route("Privacy")]
         public IActionResult Privacy()
         {
             return View();
         }
 
+        //[HttpPost("Today")]
+        //public IActionResult Today()
+        //{
+        //    return Content(this.tools.GetTodayDate());
+        //}
+
+        [HttpGet("Today")]
+        public IActionResult Today()
+        {
+            return Content(this.tools.GetTodayDate());
+        }
+
+        //[Route("Today")]
+        //public IActionResult Today()
+        //{
+        //    return Content(this.tools.GetTodayDate());
+        //}
+
+        //[Route("Error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
