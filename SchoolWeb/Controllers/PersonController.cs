@@ -6,40 +6,43 @@ namespace SchoolWeb.Controllers
 {
     public class PersonController : Controller
     {
-        private List<Person> people;
+        private static List<Person> people;
 
         public PersonController()
         {
-            this.people = new List<Person>()
+            if(people == null || !people.Any())
             {
-                new Person()
+                people = new List<Person>()
                 {
-                    PersonId = 1,
-                    FirstName = "Ted",
-                    LastName = "Mosby",
-                    Age = 35
-                },
-                new Person()
-                {
-                    PersonId = 2,
-                    FirstName = "Barney",
-                    LastName = "Stinson",
-                    Age = 38
-                },
-                new Person()
-                {
-                    PersonId = 3,
-                    FirstName = "Lily",
-                    LastName = "Aldrin",
-                    Age = 36
-                }
-            };
+                    new Person()
+                    {
+                        PersonId = 1,
+                        FirstName = "Ted",
+                        LastName = "Mosby",
+                        Age = 35
+                    },
+                    new Person()
+                    {
+                        PersonId = 2,
+                        FirstName = "Barney",
+                        LastName = "Stinson",
+                        Age = 38
+                    },
+                    new Person()
+                    {
+                        PersonId = 3,
+                        FirstName = "Lily",
+                        LastName = "Aldrin",
+                        Age = 36
+                    }
+                };
+            }
         }
 
         public IActionResult Index()
         {
             // list of person (model)
-            return View(this.people);
+            return View(people);
         }
 
         [HttpGet("Person/Index/VM")]
@@ -47,10 +50,10 @@ namespace SchoolWeb.Controllers
         {
             PersonListViewModel model = new PersonListViewModel()
             {
-                People = this.people,
+                People = people,
                 CurrentPage = currentPage,
                 ItemPerPage = itemPerPage,
-                NumberOfPages = this.people.Count() / itemPerPage
+                NumberOfPages = people.Count() / itemPerPage
             };
 
             // list of person (model)
@@ -67,9 +70,9 @@ namespace SchoolWeb.Controllers
 
             ViewBag.CurrentPage = currentPage;
             ViewBag.ItemPerPage = itemPerPage;
-            ViewBag.NumberOfPages = this.people.Count() / itemPerPage;
+            ViewBag.NumberOfPages = people.Count() / itemPerPage;
 
-            return View(this.people);
+            return View(people);
         }
 
         public IActionResult Details(int? id)
@@ -80,7 +83,7 @@ namespace SchoolWeb.Controllers
             }
 
             // find a person (model)
-            Person? p = this.people.SingleOrDefault(p => p.PersonId == id);
+            Person? p = people.SingleOrDefault(p => p.PersonId == id);
 
             if(p == null)
             {
@@ -90,6 +93,55 @@ namespace SchoolWeb.Controllers
             return View(p);
         }
 
-        
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Person person)
+        {
+
+            // insert a person in db
+            // inserted person with id 5
+            person.PersonId = 5;
+            people.Add(person);
+
+            return RedirectToAction("Details", new { id = 5 });
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id <= 0)
+            {
+                return BadRequest();
+            }
+
+            // find a person (model)
+            Person? p = people.SingleOrDefault(p => p.PersonId == id);
+
+            if (p == null)
+            {
+                return NotFound();
+            }
+
+            return View(p);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Person person)
+        {
+            Person? personToUpdate = people.SingleOrDefault(p => p.PersonId == person.PersonId);
+
+            if (personToUpdate == null)
+                return NotFound();
+
+            personToUpdate.FirstName = person.FirstName;
+            personToUpdate.LastName = person.LastName;
+            personToUpdate.Age = person.Age;
+
+            return RedirectToAction("Details", new { id = person.PersonId });
+        }
     }
 }
