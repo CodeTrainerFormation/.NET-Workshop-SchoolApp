@@ -103,6 +103,8 @@ namespace SchoolWeb.Controllers
         [HttpPost]
         public IActionResult Create(Person person)
         {
+            if(!ModelState.IsValid)
+                return View(person);
 
             // insert a person in db
             // inserted person with id 5
@@ -162,9 +164,13 @@ namespace SchoolWeb.Controllers
             return View(p);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int? id)
         {
+            //if (!User.Identity.IsAuthenticated || !User.IsInRole("admin"))
+            //    return Unauthorized();
+
             if (id == null || id <= 0)
                 return BadRequest();
 
