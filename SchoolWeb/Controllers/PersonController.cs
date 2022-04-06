@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SchoolWeb.Models;
 using System.Net;
 
@@ -6,11 +7,11 @@ namespace SchoolWeb.Controllers
 {
     public class PersonController : Controller
     {
-        private static List<Person> people;
+        private static List<Person>? people;
 
         public PersonController()
         {
-            if(people == null || !people.Any())
+            if (people == null || !people.Any())
             {
                 people = new List<Person>()
                 {
@@ -85,7 +86,7 @@ namespace SchoolWeb.Controllers
             // find a person (model)
             Person? p = people.SingleOrDefault(p => p.PersonId == id);
 
-            if(p == null)
+            if (p == null)
             {
                 return NotFound();
             }
@@ -130,8 +131,11 @@ namespace SchoolWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Person person)
+        public IActionResult Edit(int id, Person person)
         {
+            if (id != person.PersonId)
+                return BadRequest();
+
             Person? personToUpdate = people.SingleOrDefault(p => p.PersonId == person.PersonId);
 
             if (personToUpdate == null)
@@ -142,6 +146,37 @@ namespace SchoolWeb.Controllers
             personToUpdate.Age = person.Age;
 
             return RedirectToAction("Details", new { id = person.PersonId });
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id <= 0)
+                return BadRequest();
+
+            // find a person (model)
+            Person? p = people.SingleOrDefault(p => p.PersonId == id);
+
+            if (p == null)
+                return NotFound();
+
+            return View(p);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed(int? id)
+        {
+            if (id == null || id <= 0)
+                return BadRequest();
+
+            // find a person (model)
+            Person? p = people.SingleOrDefault(p => p.PersonId == id);
+
+            if (p == null)
+                return NotFound();
+
+            people.Remove(p);
+
+            return RedirectToAction("Index");
         }
     }
 }
