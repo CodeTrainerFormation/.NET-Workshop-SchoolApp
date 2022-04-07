@@ -8,6 +8,7 @@ namespace SchoolWeb.Models
 
         [StringLength(30)]
         [Required(ErrorMessage = "Le prénom est obligatoire !")]
+        [Display(Name = "Prénom")]
         public string? FirstName { get; set; }
 
         [Required]

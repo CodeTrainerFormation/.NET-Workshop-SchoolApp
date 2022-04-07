@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SchoolWeb.Filters;
 using SchoolWeb.Models;
+using System.Diagnostics;
 using System.Net;
 
 namespace SchoolWeb.Controllers
@@ -68,6 +70,7 @@ namespace SchoolWeb.Controllers
             //this.ViewData["myPerson"] = new Person() { FirstName = "Robin" };
 
             ViewBag.MyKey = "mynewvalue";
+            //ViewBag.MyKey = name; // "<script>...</script>" XSS
 
             ViewBag.CurrentPage = currentPage;
             ViewBag.ItemPerPage = itemPerPage;
@@ -111,7 +114,7 @@ namespace SchoolWeb.Controllers
             person.PersonId = 5;
             people.Add(person);
 
-            return RedirectToAction("Details", new { id = 5 });
+            return RedirectToAction(nameof(Details), new { id = person.PersonId });
         }
 
         public IActionResult Edit(int? id)
@@ -147,9 +150,10 @@ namespace SchoolWeb.Controllers
             personToUpdate.LastName = person.LastName;
             personToUpdate.Age = person.Age;
 
-            return RedirectToAction("Details", new { id = person.PersonId });
+            return RedirectToAction(nameof(Details), new { id = person.PersonId });
         }
 
+        // GET : /Person/Delete/5
         public IActionResult Delete(int? id)
         {
             if (id == null || id <= 0)
@@ -164,8 +168,10 @@ namespace SchoolWeb.Controllers
             return View(p);
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost, ActionName("Delete")]
+        // POST : /Person/Delete/5
+        //[Authorize(Roles = "Admin")]
+        [HttpPost, ActionName(nameof(Delete))]
+        [MyActionFilter]
         public IActionResult DeleteConfirmed(int? id)
         {
             //if (!User.Identity.IsAuthenticated || !User.IsInRole("admin"))
@@ -182,7 +188,7 @@ namespace SchoolWeb.Controllers
 
             people.Remove(p);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

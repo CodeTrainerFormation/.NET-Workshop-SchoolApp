@@ -8,3 +8,36 @@
 }
 
 Index - number of person in this list: @Model.Count
+
+@*<ul>
+    @foreach (Person person in Model)
+    {
+        <li><a href="/Person/Details/@person.PersonId" >@person.FirstName - @person.LastName</a></li>
+    }
+</ul>*@
+
+<table>
+    <tr>
+        <th>Prénom - Nom</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+    @foreach (Person person in Model)
+    {
+    <tr>
+        <td>@person.FirstName - @person.LastName</td>
+        <td>
+            <i>
+                <a href="/Person/Details/@person.PersonId" >voir</a>
+            </i>
+        </td>
+        <td>
+            <i>
+                @Html.ActionLink("modifier", "Edit", new { id = person.PersonId })
+            </i>
+        </td>
+        <td></td>
+    </tr>
+    }
+</table>
