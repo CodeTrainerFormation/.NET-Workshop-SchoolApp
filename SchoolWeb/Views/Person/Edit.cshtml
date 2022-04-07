@@ -1,10 +1,39 @@
 ﻿@model Person
 
-<form method="post" >
+@*<form>
+    
     Id : <input type="text" name="PersonId" value="@Model.PersonId" readonly /><br />
     FirstName : <input type="text" name="FirstName" value="@Model.FirstName" /><br />
     LastName : <input type="text" name="LastName" value="@Model.LastName" /><br />
     Age : <input type="text" name="Age" value="@Model.Age" /><br />
+
+    <input type="submit" />
+</form>*@
+
+@*<form asp-controller="Person" asp-action="Edit" asp-route-id="@Model.PersonId" method="post" >*@
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger" ></div>
+
+    <div class="form-group">
+        <label asp-for="PersonId" class="control-label text-primary"></label>
+        <input asp-for="PersonId" class="form-control" readonly="true" />
+        <span asp-validation-for="PersonId" class="text-danger" ></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FirstName" class="control-label text-primary"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger" ></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName" class="control-label text-primary"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger" ></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Age" class="control-label text-primary"></label>
+        <input asp-for="Age" class="form-control" />
+        <span asp-validation-for="Age" class="text-danger" ></span>
+    </div>
 
     <input type="submit" />
 </form>

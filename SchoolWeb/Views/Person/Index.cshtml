@@ -29,15 +29,19 @@ Index - number of person in this list: @Model.Count
         <td>@person.FirstName - @person.LastName</td>
         <td>
             <i>
-                <a href="/Person/Details/@person.PersonId" >voir</a>
+                <a href="/Person/Details/@person.PersonId" target="_blank" class="text-warning" >voir</a>
             </i>
         </td>
         <td>
             <i>
-                @Html.ActionLink("modifier", "Edit", new { id = person.PersonId })
+                @Html.ActionLink("modifier", "Edit", new { id = person.PersonId }, new { target = "__blank", @class = "text-warning" })
             </i>
         </td>
-        <td></td>
+        <td>
+            <i>
+                <a asp-action="Delete" asp-route-id="@person.PersonId" class="text-warning" >supprimer</a>
+            </i>
+        </td>
     </tr>
     }
 </table>

@@ -141,6 +141,12 @@ namespace SchoolWeb.Controllers
             if (id != person.PersonId)
                 return BadRequest();
 
+            //if (true) // si verification email non valide
+            //    ModelState.AddModelError("email-used", "Email déjà utilisé !");
+
+            if (!ModelState.IsValid)
+                return View(person);
+
             Person? personToUpdate = people.SingleOrDefault(p => p.PersonId == person.PersonId);
 
             if (personToUpdate == null)
@@ -189,6 +195,11 @@ namespace SchoolWeb.Controllers
             people.Remove(p);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult GetImage()
+        {
+            return File("myfile.jpg", "image/jpeg");
         }
     }
 }
