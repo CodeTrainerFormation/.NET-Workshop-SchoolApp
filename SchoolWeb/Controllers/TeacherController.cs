@@ -5,13 +5,13 @@ namespace SchoolWeb.Controllers
 {
     public class TeacherController : Controller
     {
-        private static List<Teacher>? teacher;
+        private static List<Teacher>? teachers;
 
         public TeacherController()
         {
-            if (teacher == null || !teacher.Any())
+            if (teachers == null || !teachers.Any())
             {
-                teacher = new List<Teacher>()
+                teachers = new List<Teacher>()
                 {
                     new Teacher()
                     {
