@@ -178,6 +178,7 @@ namespace SchoolWeb.Controllers
         //[Authorize(Roles = "Admin")]
         [HttpPost, ActionName(nameof(Delete))]
         [MyActionFilter]
+        [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int? id)
         {
             //if (!User.Identity.IsAuthenticated || !User.IsInRole("admin"))
