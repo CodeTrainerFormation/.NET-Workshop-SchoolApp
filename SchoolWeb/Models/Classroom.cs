@@ -1,7 +1,10 @@
-﻿namespace SchoolWeb.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SchoolWeb.Models
 {
     public class Classroom
     {
+        [Key]
         public int ClassroomId { get; set; }
         public string? Name { get; set; }
         public int Floor { get; set; }

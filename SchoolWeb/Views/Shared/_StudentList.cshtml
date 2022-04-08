@@ -1,18 +1,7 @@
-﻿@model IEnumerable<SchoolWeb.Models.Teacher>
-
-@{
-    ViewData["Title"] = "My page : Index";
-    Layout = "_MyLayout";
-}
-
-@*@section footer{
-    Copyright IB @@ 2030
-}*@
-
-<h1>Index</h1>
+﻿@model IEnumerable<SchoolWeb.Models.Student>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-controller="Student" asp-route-classroomid="@ViewBag.ClassroomId" >Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -29,13 +18,13 @@
             <th>
                 @Html.DisplayNameFor(model => model.Age)
             </th>
-             <th>
-                @Html.DisplayNameFor(model => model.Discipline)
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Average)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HiringDate)
+                @Html.DisplayNameFor(model => model.IsClassDelegate)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -54,15 +43,15 @@
                 @Html.DisplayFor(modelItem => item.Age)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Discipline)
+                @Html.DisplayFor(modelItem => item.Average)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HiringDate)
+                @Html.DisplayFor(modelItem => item.IsClassDelegate)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.PersonId }) |
-                @Html.ActionLink("Details", "Details", new {  id=item.PersonId  }) |
-                @Html.ActionLink("Delete", "Delete", new {  id=item.PersonId  })
+                @Html.ActionLink("Edit", "Edit", new { id=item.PersonId }) |
+                @Html.ActionLink("Details", "Details", new { id=item.PersonId }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.PersonId })
             </td>
         </tr>
 }

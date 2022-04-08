@@ -1,3 +1,4 @@
+using SchoolWeb.Data;
 using SchoolWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ builder.Services.AddControllersWithViews();
 //builder.Services.AddTransient
 
 builder.Services.AddSingleton<ITools, Tools>();
+
+builder.Services.AddDbContext<SchoolContext>();
 
 var app = builder.Build();
 
