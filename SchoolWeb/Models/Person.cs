@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolWeb.Models
 {
+    [Table("Person")]
     public class Person
     {
         [Key]

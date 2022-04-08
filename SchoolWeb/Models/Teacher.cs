@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolWeb.Models
 {
+    [Table("Teacher")]
     public class Teacher : Person
     {
         public string? Discipline { get; set; }
@@ -13,7 +14,7 @@ namespace SchoolWeb.Models
         public DateTime HiringDate { get; set; }
 
         //[ForeignKey]
-        public int ClassroomId { get; set; }
+        public int? ClassroomId { get; set; }
         public Classroom? Classroom { get; set; }
     }
 }

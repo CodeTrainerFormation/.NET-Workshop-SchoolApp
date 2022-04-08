@@ -1,5 +1,8 @@
-﻿namespace SchoolWeb.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SchoolWeb.Models
 {
+    [Table("Student")]
     public class Student : Person
     {
         public double Average { get; set; }

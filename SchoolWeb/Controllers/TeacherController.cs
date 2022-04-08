@@ -1,52 +1,56 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SchoolWeb.Data;
 using SchoolWeb.Models;
 
 namespace SchoolWeb.Controllers
 {
     public class TeacherController : Controller
     {
-        private static List<Teacher>? teachers;
+        //private static List<Teacher>? teachers;
+        private readonly SchoolContext schoolContext;
 
-        public TeacherController()
+        public TeacherController(SchoolContext schoolContext)
         {
-            if (teachers == null || !teachers.Any())
-            {
-                teachers = new List<Teacher>()
-                {
-                    new Teacher()
-                    {
-                        PersonId = 1,
-                        FirstName = "Ted",
-                        LastName = "Mosby",
-                        Age = 35,
-                        Discipline = "Architect",
-                        HiringDate = new DateTime(2008, 12, 30)
-                    },
-                    new Teacher()
-                    {
-                        PersonId = 2,
-                        FirstName = "Barney",
-                        LastName = "Stinson",
-                        Age = 38,
-                        Discipline = "Economy",
-                        HiringDate = new DateTime(2020, 01, 25)
-                    },
-                    new Teacher()
-                    {
-                        PersonId = 3,
-                        FirstName = "Lily",
-                        LastName = "Aldrin",
-                        Age = 36,
-                        Discipline = "Generalist",
-                        HiringDate = new DateTime(2016, 02, 21)
-                    }
-                };
-            }
+            this.schoolContext = schoolContext;
+
+            //if (teachers == null || !teachers.Any())
+            //{
+            //    teachers = new List<Teacher>()
+            //    {
+            //        new Teacher()
+            //        {
+            //            PersonId = 1,
+            //            FirstName = "Ted",
+            //            LastName = "Mosby",
+            //            Age = 35,
+            //            Discipline = "Architect",
+            //            HiringDate = new DateTime(2008, 12, 30)
+            //        },
+            //        new Teacher()
+            //        {
+            //            PersonId = 2,
+            //            FirstName = "Barney",
+            //            LastName = "Stinson",
+            //            Age = 38,
+            //            Discipline = "Economy",
+            //            HiringDate = new DateTime(2020, 01, 25)
+            //        },
+            //        new Teacher()
+            //        {
+            //            PersonId = 3,
+            //            FirstName = "Lily",
+            //            LastName = "Aldrin",
+            //            Age = 36,
+            //            Discipline = "Generalist",
+            //            HiringDate = new DateTime(2016, 02, 21)
+            //        }
+            //    };
+            //}
         }
 
         public IActionResult Index()
         {
-            return View(teachers);
+            return View(this.schoolContext.Teachers.ToList());
         }
 
         public IActionResult Details(int? id)
@@ -56,7 +60,8 @@ namespace SchoolWeb.Controllers
                 return BadRequest();
             }
 
-            Teacher? teacher = teachers.SingleOrDefault(p => p.PersonId == id);
+            Teacher? teacher = this.schoolContext.Teachers.SingleOrDefault(p => p.PersonId == id);
+            //Teacher? teacher = this.schoolContext.Teachers.Find(id)
 
             if (teacher == null)
             {
@@ -78,8 +83,9 @@ namespace SchoolWeb.Controllers
             if (!ModelState.IsValid)
                 return View(teacher);
 
-            teacher.PersonId = 5;
-            teachers.Add(teacher);
+            //teacher.PersonId = 5;
+            this.schoolContext.Teachers.Add(teacher);
+            this.schoolContext.SaveChanges();
 
             return RedirectToAction(nameof(Details), new { id = teacher.PersonId });
         }
@@ -92,7 +98,7 @@ namespace SchoolWeb.Controllers
             }
 
             // find a teacher (model)
-            Teacher? teacher = teachers.SingleOrDefault(t => t.PersonId == id);
+            Teacher? teacher = this.schoolContext.Teachers.SingleOrDefault(t => t.PersonId == id);
 
             if (teacher == null)
             {
@@ -111,16 +117,19 @@ namespace SchoolWeb.Controllers
             if (!ModelState.IsValid)
                 return View(teacher);
 
-            Teacher? teacherToUpdate = teachers.SingleOrDefault(p => p.PersonId == teacher.PersonId);
+            //Teacher? teacherToUpdate = this.schoolContext.Teachers.SingleOrDefault(p => p.PersonId == teacher.PersonId);
 
-            if (teacherToUpdate == null)
-                return NotFound();
+            //if (teacherToUpdate == null)
+            //    return NotFound();
 
-            teacherToUpdate.FirstName = teacher.FirstName;
-            teacherToUpdate.LastName = teacher.LastName;
-            teacherToUpdate.Age = teacher.Age;
-            teacherToUpdate.HiringDate = teacher.HiringDate;
-            teacherToUpdate.Discipline = teacher.Discipline;
+            //teacherToUpdate.FirstName = teacher.FirstName;
+            //teacherToUpdate.LastName = teacher.LastName;
+            //teacherToUpdate.Age = teacher.Age;
+            //teacherToUpdate.HiringDate = teacher.HiringDate;
+            //teacherToUpdate.Discipline = teacher.Discipline;
+
+            this.schoolContext.Update(teacher);
+            this.schoolContext.SaveChanges();
 
             return RedirectToAction(nameof(Details), new { id = teacher.PersonId });
         }
@@ -130,7 +139,7 @@ namespace SchoolWeb.Controllers
             if (id == null || id <= 0)
                 return BadRequest();
 
-            Teacher? teacher = teachers.SingleOrDefault(p => p.PersonId == id);
+            Teacher? teacher = this.schoolContext.Teachers.SingleOrDefault(p => p.PersonId == id);
 
             if (teacher == null)
                 return NotFound();
@@ -144,12 +153,13 @@ namespace SchoolWeb.Controllers
             if (id == null || id <= 0)
                 return BadRequest();
 
-            Teacher? teacher = teachers.SingleOrDefault(p => p.PersonId == id);
+            Teacher? teacher = this.schoolContext.Teachers.SingleOrDefault(p => p.PersonId == id);
 
             if (teacher == null)
                 return NotFound();
 
-            teachers.Remove(teacher);
+            this.schoolContext.Teachers.Remove(teacher);
+            this.schoolContext.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
