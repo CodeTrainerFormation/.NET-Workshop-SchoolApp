@@ -8,7 +8,7 @@ namespace SchoolWeb.Models
         public string? Discipline { get; set; }
 
         [DisplayName("Date d'embauche")]
-        [DisplayFormat(DataFormatString = "dd/MM/yy", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yy}", ApplyFormatInEditMode = true)]
         public DateTime HiringDate { get; set; }
 
         public Classroom? Classroom { get; set; }
