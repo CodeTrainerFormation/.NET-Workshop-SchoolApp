@@ -9,5 +9,14 @@ namespace SchoolWeb.Data
         public DbSet<Student>? Students { get; set; }
         public DbSet<Teacher>? Teachers { get; set; }
         public DbSet<Classroom>? Classrooms { get; set; }
+
+        public SchoolContext()
+        {
+        }
+
+        public SchoolContext(DbContextOptions options)
+            : base(options)
+        {
+        }
     }
 }

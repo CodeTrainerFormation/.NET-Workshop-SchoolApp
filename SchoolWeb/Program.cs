@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SchoolWeb.Data;
 using SchoolWeb.Services;
 
@@ -12,7 +13,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<ITools, Tools>();
 
-builder.Services.AddDbContext<SchoolContext>();
+builder.Services.AddDbContext<SchoolContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolDb"));
+});
 
 var app = builder.Build();
 
